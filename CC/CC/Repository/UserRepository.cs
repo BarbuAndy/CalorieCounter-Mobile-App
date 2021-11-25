@@ -1,5 +1,6 @@
 ﻿using CC.DbModels;
 using CC.Helpers;
+using CC.Models;
 using CC.Queries;
 using CC.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -66,6 +67,16 @@ namespace CC.Repository
                 query = query.Where(e => e.role == req.role);
             }
             return query.AsEnumerable();
+        }
+
+        internal void UpdatePassword(UpdatePasswordModel pm)
+        {
+            var user = _dbContext.User.FirstOrDefault(u => u.userId == pm.userId);
+            var hashCheck = passHash.VerifyHashedPassword(user, user.passwordHash, pm.oldPassword);
+            if (hashCheck == PasswordVerificationResult.Failed)
+                throw new Exception("password does not match");
+            user.passwordHash = passHash.HashPassword(user, pm.newPassword);
+            _dbContext.SaveChanges();
         }
 
         public bool CheckUniqueEmail(string email)

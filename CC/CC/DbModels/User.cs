@@ -17,5 +17,6 @@ namespace CC.DbModels
         public string password { get; set; }
         public string role { get; set; }
         public string token { get; set; }
+        public virtual HashSet<UserData> userData { get; set; }
     }
 }

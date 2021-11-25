@@ -4,14 +4,16 @@ using CC.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC.Migrations
 {
     [DbContext(typeof(CCDbContext))]
-    partial class CCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211025105104_addedUserIdInUserData")]
+    partial class addedUserIdInUserData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,16 +179,13 @@ namespace CC.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("activityLevelId")
+                    b.Property<int?>("activityLevelId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("dateSet")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("goalId")
+                    b.Property<int?>("goalId")
                         .HasColumnType("int");
 
-                    b.Property<int>("prefferedDietId")
+                    b.Property<int?>("prefferedDietId")
                         .HasColumnType("int");
 
                     b.Property<int>("userId")
@@ -231,21 +230,15 @@ namespace CC.Migrations
                 {
                     b.HasOne("CC.DbModels.ActivityLevel", "activityLevel")
                         .WithMany()
-                        .HasForeignKey("activityLevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("activityLevelId");
 
                     b.HasOne("CC.DbModels.Goal", "goal")
                         .WithMany()
-                        .HasForeignKey("goalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("goalId");
 
                     b.HasOne("CC.DbModels.PrefferedDiet", "prefferedDiet")
                         .WithMany()
-                        .HasForeignKey("prefferedDietId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("prefferedDietId");
 
                     b.HasOne("CC.DbModels.User", null)
                         .WithMany("userData")

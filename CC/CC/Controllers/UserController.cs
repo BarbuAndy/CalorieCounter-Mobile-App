@@ -1,5 +1,6 @@
 ﻿using CC.DbModels;
 using CC.Helpers;
+using CC.Models;
 using CC.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -67,9 +68,14 @@ namespace CC.Controllers
             catch
             {
                 return Unauthorized();
-            }
+            } 
+        }
 
-            
+        [HttpPut("updatePassword")]
+        public IActionResult UpdatePassword([FromBody] UpdatePasswordModel pm)
+        {
+                _userRepository.UpdatePassword(pm);
+                return Ok();
         }
 
 

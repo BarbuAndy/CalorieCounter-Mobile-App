@@ -43,6 +43,8 @@ namespace CC
             services.AddScoped<FoodItemConsumedRepository>();
             services.AddScoped<FoodItemService>();
             services.AddScoped<StatisticsService>();
+            services.AddScoped<UserDataRepository>();
+            services.AddScoped<UserDataService>();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -70,8 +72,8 @@ namespace CC
             app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
             app.UseHttpsRedirection();
 
@@ -85,6 +87,9 @@ namespace CC
             {
                 endpoints.MapControllers();
             });
+
+            new DataSeeder(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider.GetService<CCDbContext>()).Seed();
         }
+
     }
 }
